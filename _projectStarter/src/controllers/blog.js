@@ -3,14 +3,14 @@
     | FULLSTACK TEAM | NODEJS / EXPRESS |
 ------------------------------------------------------- */
 
-const Firm = require('../models/firm');
+const blog = require('../models/blog');
 
 module.exports = {
 
     list: async (req, res) => {
         /*
-            #swagger.tags = ["Firms"]
-            #swagger.summary = "List Firms"
+            #swagger.tags = ["blogs"]
+            #swagger.summary = "List blogs"
             #swagger.description = `
                 You can use <u>filter[] & search[] & sort[] & page & limit</u> queries with endpoint.
                 <ul> Examples:
@@ -22,11 +22,11 @@ module.exports = {
             `
         */
 
-        const data = await res.getModelList(Firm);
+        const data = await res.getModelList(blog);
 
         res.status(200).send({
             error: false,
-            details: await res.getModelListDetails(Firm),
+            details: await res.getModelListDetails(blog),
             data
         });
     },
@@ -34,18 +34,18 @@ module.exports = {
     create: async (req, res) => {
 
         /*
-            #swagger.tags = ["Firms"]
-            #swagger.summary = "Create Firm"
+            #swagger.tags = ["blogs"]
+            #swagger.summary = "Create blog"
             #swagger.parameters['body'] = {
                 in: 'body',
                 required: true,
                 schema: {
-                    $ref: "#/definitions/Firm"
+                    $ref: "#/definitions/blog"
                 }
             }
         */
 
-        const data = await Firm.create(req.body);
+        const data = await blog.create(req.body);
 
         res.status(200).send({
             error: false,
@@ -56,11 +56,11 @@ module.exports = {
     read: async (req, res) => {
 
         /*
-            #swagger.tags = ["Firms"]
-            #swagger.summary = "Get Single Firm"
+            #swagger.tags = ["blogs"]
+            #swagger.summary = "Get Single blog"
         */
 
-        const data = await Firm.findById(req.params.id);
+        const data = await blog.findById(req.params.id);
 
         res.status(200).send({
             error: false,
@@ -71,33 +71,33 @@ module.exports = {
     update: async (req, res) => {
 
         /*
-            #swagger.tags = ["Firms"]
-            #swagger.summary = "Update Firm"
+            #swagger.tags = ["blogs"]
+            #swagger.summary = "Update blog"
             #swagger.parameters['body'] = {
                 in: 'body',
                 required: true,
                 schema: {
-                    $ref: "#/definitions/Firm"
+                    $ref: "#/definitions/blog"
                 }
             }
         */
 
-        const data = await Firm.updateOne({ _id: req.params.id }, req.body, { runValidators: true });
+        const data = await blog.updateOne({ _id: req.params.id }, req.body, { runValidators: true });
 
         res.status(200).send({
             error: false,
             data,
-            new: await Firm.findById(req.params.id)
+            new: await blog.findById(req.params.id)
         });
     },
 
     deletee: async (req, res) => {
         /*
-            #swagger.tags = ["Firms"]
-            #swagger.summary = "Delete Firm"
+            #swagger.tags = ["blogs"]
+            #swagger.summary = "Delete blog"
         */
 
-        const data = await Firm.deleteOne({ _id: req.params.id });
+        const data = await blog.deleteOne({ _id: req.params.id });
 
         res.status(data.deletedCount ? 204 : 404).send({
             error: !data.deletedCount,

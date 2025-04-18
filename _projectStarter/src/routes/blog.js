@@ -5,9 +5,9 @@
 const router = require('express').Router()
 /* ------------------------------------------------------- */
 
-const { list, create, read, update, deletee } = require('../controllers/purchase');
+const { list, create, read, update, deletee } = require('../controllers/blog');
 
-// URL: /purchases
+// URL: /blogs
 
 router.route('/').get(list).post(create);
 

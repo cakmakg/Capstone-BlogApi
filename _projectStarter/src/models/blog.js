@@ -5,7 +5,13 @@
 const { mongoose } = require('../configs/dbConnection')
 /* ------------------------------------------------------- */
 
-const ProductSchema = new mongoose.Schema({
+const BlogSchema = new mongoose.Schema({
+
+    userId: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'User',
+        required: true
+    },
 
     categoryId: {
         type: mongoose.Schema.Types.ObjectId,
@@ -13,26 +19,41 @@ const ProductSchema = new mongoose.Schema({
         required: true
     },
 
-    brandId: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'Brand',
-        required: true
-    },
-
-    name: {
+    title: {
         type: String,
         trim: true,
+    },
+
+    content: {
+        type: Number,
         required: true
     },
 
-    quantity: {
+    image: {
+        type: String,
+        trim: true,
+    },
+
+    isPublish: {
+        type: Boolean,
+        default: true
+    },
+    isPublish: {
+        type: Boolean,
+        default: true
+    },
+    likes: {
         type: Number,
-        default: 0
-    }
+        default: false
+    },
+    countofVisitors: {
+        type: Number,
+        default: false
+    },
 
 }, {
-    collection: 'products',
+    collection: 'blogs',
     timestamps: true
 });
 
-module.exports = mongoose.model('Product', ProductSchema);
+module.exports = mongoose.model('Blog', BlogSchema);

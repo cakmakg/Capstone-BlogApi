@@ -3,6 +3,7 @@
     | FULLSTACK TEAM | NODEJS / EXPRESS |
 ------------------------------------------------------- */
 const { mongoose } = require('../configs/dbConnection')
+const passwordEncrypt= require ('../helpers/passwordEncrypt')
 /* ------------------------------------------------------- */
 
 const UserSchema = new mongoose.Schema({
@@ -29,21 +30,16 @@ const UserSchema = new mongoose.Schema({
         index:true
     },
 
-    firstname: {
+    firstName: {
         type: String,
         trim: true,
         required: true,
     },
 
-    lastname: {
+    lastName: {
         type: String,
         trim: true,
         required: true,
-    },
-
-    isActive: {
-        type: Boolean,
-        default: true
     },
 
     isStaff: {
@@ -60,6 +56,35 @@ const UserSchema = new mongoose.Schema({
     collection: 'users',
     timestamps: true
 });
+
+UserSchema.pre(['save', 'updateone'], function(next){
+
+    console.log('pre-save worked');
+    console.log(this);
+    // egerki kullanici update yapiyorsa _update i data ya at, yapmiyorsa this dedigimiz veriyi direk dataya atabilir
+    const data= this._update?? this
+    // Email Control
+    const isEmailValidated= data.email ? /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(email) : true
+
+     if(!isEmailValidated){
+        next(new Error('Email is not Validated'))
+     }
+
+     const isPasswordValidated= data.password ? /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/.test(data.password) : true
+
+     if(!isPasswordValidated){
+        next(new Error('Password is not Validated'))
+     }
+
+     if (this._update){ //update
+        this._update.password= passwordEncrypt(data.password)
+     }else{ //save
+        this.password= passwordEncrypt(data.password)
+
+     }
+     
+    next()
+})
 
 /* ------------------------------------------------------- */
 module.exports = mongoose.model('User', UserSchema);

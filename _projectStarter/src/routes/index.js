@@ -15,22 +15,13 @@ router.use('/users', require('./user'));
 // token:/
 router.use('/tokens', require('./token'));
 
-
-// brand:
-router.use('/brands', require('./brand'));
+// blog:
+router.use('/blogs', require('./blog'));
 // category:
 router.use('/categories', require('./category'));
-// firm:
-router.use('/firms', require('./firm'));
-// product:
-router.use('/products', require('./product'));
-// purchase:
-router.use('/purchases', require('./purchase'));
-// sale:
-router.use('/sales', require('./sale'));
 
-// document:
-router.use('/documents', require('./document'))
+// comment:
+router.use('/comments', require('./comment'));
 
 /* ------------------------------------------------------- */
 module.exports = router;

@@ -34,7 +34,7 @@ module.exports = {
             throw new Error("username/email and password are required");
         };
 
-        const user = await User.findOne({ $or: [{ username }, { email }] });
+        
 
         if (user?.password !== passwordEncrypt(password)) {
             res.errorStatusCode = 401;
@@ -77,6 +77,64 @@ module.exports = {
             user,
         });
     },
+
+    register: async (req, res) => {
+    
+            /*
+                #swagger.tags = ["Authentication"]
+                #swagger.summary = "Register User"
+                #swagger.parameters['body'] = {
+                    in: 'body',
+                    required: true,
+                    schema: {
+                        "username": "test",
+                        "password": "1234",
+                        "email": "test@site.com",
+                        "firstName": "test",
+                        "lastName": "test",
+                    }
+                }
+            */
+           const {username, email}= req.body
+                const isUserExist = await User.findOne({ $or: [{ username }, { email }] });
+
+                if (isUserExist) {
+                    res.errorStatusCode = 401;
+                    throw new Error(" Already used username or email.");
+                };
+
+            const user = await User.create(req.body);
+    
+             /* SIMPLE TOKEN */
+       
+            const tokenData = await Token.create({
+                userId: user._id,
+                token: passwordEncrypt(user._id + Date.now()),
+            });
+        
+        /* SIMPLE TOKEN */
+
+        /* JWT */
+        const accessData = {
+            _id: user._id,
+            username: user.username,
+            email: user.email,
+            isActive: user.isActive,
+            isAdmin: user.isAdmin,
+        };
+
+        const accessToken = jwt.sign(accessData, process.env.ACCESS_KEY, { expiresIn: '30m' })
+        const refreshToken = jwt.sign({ _id: user._id, password: user.password }, process.env.REFRESH_KEY, { expiresIn: '3d' })
+        /* JWT */
+
+        res.send({
+            error: false,
+            token: tokenData.token,
+            bearer: { accessToken, refreshToken },
+            user,
+        });
+    },
+        
 
     refresh: async (req, res) => {
         /*

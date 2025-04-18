@@ -3,14 +3,14 @@
     | FULLSTACK TEAM | NODEJS / EXPRESS |
 ------------------------------------------------------- */
 
-const Purchase = require('../models/purchase');
+const comment = require('../models/comment');
 
 module.exports = {
 
     list: async (req, res) => {
         /*
-            #swagger.tags = ["Purchases"]
-            #swagger.summary = "List Purchases"
+            #swagger.tags = ["comments"]
+            #swagger.summary = "List comments"
             #swagger.description = `
                 You can use <u>filter[] & search[] & sort[] & page & limit</u> queries with endpoint.
                 <ul> Examples:
@@ -22,11 +22,11 @@ module.exports = {
             `
         */
 
-        const data = await res.getModelList(Purchase);
+        const data = await res.getModelList(comment);
 
         res.status(200).send({
             error: false,
-            details: await res.getModelListDetails(Purchase),
+            details: await res.getModelListDetails(comment),
             data
         });
     },
@@ -34,18 +34,18 @@ module.exports = {
     create: async (req, res) => {
 
         /*
-            #swagger.tags = ["Purchases"]
-            #swagger.summary = "Create Purchase"
+            #swagger.tags = ["comments"]
+            #swagger.summary = "Create comment"
             #swagger.parameters['body'] = {
                 in: 'body',
                 required: true,
                 schema: {
-                    $ref: "#/definitions/Purchase"
+                    $ref: "#/definitions/comment"
                 }
             }
         */
 
-        const data = await Purchase.create(req.body);
+        const data = await comment.create(req.body);
 
         res.status(200).send({
             error: false,
@@ -56,11 +56,11 @@ module.exports = {
     read: async (req, res) => {
 
         /*
-            #swagger.tags = ["Purchases"]
-            #swagger.summary = "Get Single Purchase"
+            #swagger.tags = ["comments"]
+            #swagger.summary = "Get Single comment"
         */
 
-        const data = await Purchase.findById(req.params.id);
+        const data = await comment.findById(req.params.id);
 
         res.status(200).send({
             error: false,
@@ -71,33 +71,33 @@ module.exports = {
     update: async (req, res) => {
 
         /*
-            #swagger.tags = ["Purchases"]
-            #swagger.summary = "Update Purchase"
+            #swagger.tags = ["comments"]
+            #swagger.summary = "Update comment"
             #swagger.parameters['body'] = {
                 in: 'body',
                 required: true,
                 schema: {
-                    $ref: "#/definitions/Purchase"
+                    $ref: "#/definitions/comment"
                 }
             }
         */
 
-        const data = await Purchase.updateOne({ _id: req.params.id }, req.body, { runValidators: true });
+        const data = await comment.updateOne({ _id: req.params.id }, req.body, { runValidators: true });
 
         res.status(200).send({
             error: false,
             data,
-            new: await Purchase.findById(req.params.id)
+            new: await comment.findById(req.params.id)
         });
     },
 
     deletee: async (req, res) => {
         /*
-            #swagger.tags = ["Purchases"]
-            #swagger.summary = "Delete Purchase"
+            #swagger.tags = ["comments"]
+            #swagger.summary = "Delete comment"
         */
 
-        const data = await Purchase.deleteOne({ _id: req.params.id });
+        const data = await comment.deleteOne({ _id: req.params.id });
 
         res.status(data.deletedCount ? 204 : 404).send({
             error: !data.deletedCount,
