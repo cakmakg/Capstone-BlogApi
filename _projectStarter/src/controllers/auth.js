@@ -103,7 +103,7 @@ module.exports = {
                     throw new Error(" Already used username or email.");
                 };
 
-            const user = await User.create(req.body);
+            const user = await User.create(req.body); 
     
              /* SIMPLE TOKEN */
        

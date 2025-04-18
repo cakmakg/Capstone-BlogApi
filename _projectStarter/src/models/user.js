@@ -64,26 +64,28 @@ UserSchema.pre(['save', 'updateone'], function(next){
     // egerki kullanici update yapiyorsa _update i data ya at, yapmiyorsa this dedigimiz veriyi direk dataya atabilir
     const data= this._update?? this
     // Email Control
-    const isEmailValidated= data.email ? /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(email) : true
+    const isEmailValidated = data.email ? /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(data.email) : true;
 
      if(!isEmailValidated){
         next(new Error('Email is not Validated'))
      }
 
-     const isPasswordValidated= data.password ? /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/.test(data.password) : true
+     const isPasswordValidated = data.password  ? /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{6,}$/.test(data.password) : true;
 
      if(!isPasswordValidated){
         next(new Error('Password is not Validated'))
      }
 
-     if (this._update){ //update
-        this._update.password= passwordEncrypt(data.password)
-     }else{ //save
-        this.password= passwordEncrypt(data.password)
+     if (this._update) { // Update
 
-     }
-     
-    next()
+        this._update.password = passwordEncrypt(data.password);
+
+    } else { // Save
+
+        this.password = passwordEncrypt(data.password);
+    };
+
+    next();
 })
 
 /* ------------------------------------------------------- */

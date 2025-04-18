@@ -1,4 +1,5 @@
 "use strict"
+const Blog = require('../models/blog');
 /* -------------------------------------------------------
     | FULLSTACK TEAM | NODEJS / EXPRESS |
 ------------------------------------------------------- */
@@ -45,12 +46,12 @@ module.exports = {
             }
         */
 
-        const data = await blog.create(req.body);
+            const data = await blog.create(req.body);
 
-        res.status(200).send({
-            error: false,
-            data
-        });
+            res.status(200).send({
+                error: false,
+                data
+            });
     },
 
     read: async (req, res) => {
